@@ -1,0 +1,40 @@
+{% extends 'base.html'%}
+
+{% block content %}
+
+<div id="myCarousel" class="carousel slide" data-ride="carousel">
+    <div class="carousel-inner" role="listbox">
+        <div class="item active">
+           <div id="map" class="map"></div>
+            <div class="container">
+                <div class="carousel-caption">
+                    <h2 itemprop="name"><b>&laquo;Дилеры&raquo;</b></h2>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container marketing_dilers">   
+    <div class="row row-offcanvas row-offcanvas-right">
+        <div class="row">
+		{% for el in dilers %}
+			<div class="col-xs-5 col-lg-4">
+                <h3 class="text-left">{{ el.city }}</h3>
+                <hr class="half-rule">
+                <a href="#" data-coords="{{ el.coords }}" data-zoom="6" data-address="{{ el.address }}" class="js-map ">
+                    <div class="text-left">{{ el.address }}</div>
+                </a>
+                {% if el.phone  %}
+                	<div class="text-left">Тел./факс: {{ el.phone }}</div>
+                {% endif%}
+                {% if el.phone  %}
+                	<div class="text-left">E-mail: {{ el.email }}</div>
+                {% endif%}
+                <hr class="half-rule">
+         	</div>
+		{% endfor %}
+		</div>
+	</div>
+
+{% endblock content %}

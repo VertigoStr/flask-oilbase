@@ -1,0 +1,38 @@
+{% extends 'base.html'%}
+
+{% block content %}
+
+{% for el in carousel %}
+<div id="myCarousel" class="carousel slide" data-ride="carousel">
+    <div class="carousel-inner" role="listbox">
+        <div class="item active">
+            <img class="first-slide" src="data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" alt="First slide">
+            <div class="container">
+                <div class="carousel-caption">
+                    <h1>&laquo;{{ el.title }}&raquo;</h1>
+                    <p>{{ el.description }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endfor %}
+
+{% for el in desc %}
+<div class="container marketing">
+    <div class="row featurette">
+        <h3 class="text-left">{{ el.title }}</h3>
+            <div class="center-block">
+                <div class="panel-body">
+    				{% for img in el.image %}
+                    <div class="col-lg-4">
+                        <img src="{{ img }}" class="img-rounded" alt="Cinque Terre" width="304" height="236"> 
+                    </div>
+                    {% endfor %}
+                </div>
+                <div class="text-left">{% autoescape off %}{{ el.description }}{% endautoescape %}</div>
+            </div>
+    </div>
+    <hr class="featurette-divider">
+{% endfor %}
+{% endblock content %}
