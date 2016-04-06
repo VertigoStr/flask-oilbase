@@ -1,0 +1,28 @@
+{% macro render(form) %}
+<div class="col-lg-6">
+    {% for field in form %}
+        {% if field.type in ['CSRFTokenField', 'HiddenField'] %}
+            {{ field() }}
+        {% else %}
+            {% if field.name != "message" %}
+                <div class="form-group">
+                    <div class="input-group col-md-11">
+                        {{ field(class="form-control", placeholder=field.description, required=True) }} 
+                    </div>
+                </div>
+            {% else %}
+                </div>
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            {{ field(class="form-control",  placeholder=field.description, required=True, rows=6) }} 
+                        </div>
+                        <div class="form-group">
+                                    <div class="input-group col-md-12">
+                                        <button class="btn btn-inverse btn-lg btn-block" type="submit">Отправить</button>
+                                    </div>
+                                </div>
+                            </div>
+            {% endif %}
+        {% endif %}
+    {% endfor %}
+{% endmacro %}

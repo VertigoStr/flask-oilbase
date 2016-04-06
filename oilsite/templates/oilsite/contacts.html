@@ -1,0 +1,164 @@
+{% extends 'base.html'%}
+{% import '_forms.html' as forms %}
+
+{% block content %}
+
+<div id="myCarousel" class="carousel slide" data-ride="carousel">
+    <div class="carousel-inner" role="listbox">
+        <div class="item active">
+            <div id="map" class="map"></div>
+            <div class="container">
+                <div class="carousel-caption">
+                    <h2 itemprop="name"><b>&laquo;Связь с нами&raquo;</b></h2>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<b>
+<div class="container marketing">
+	<div class="row featurette">
+		{% for el in contacts %}
+        <h2 class="text-center">{{ el.name }}</h2>
+        <div class="center-block">
+            <div class="col-lg-6">
+                <div class="panel-body">
+                    <blockquote class="pull-right">
+                        <div class="form-group js-map" data-coords="{{ el.coords }}" data-address="{{ el.address }}" data-zoom="9">
+                            <div>{{ el.address }}</div>
+                        </div>
+                    </blockquote>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="panel-body">
+                    <blockquote>
+                        <div class="form-group">
+                            <div>Адрес электронной почты: {{ el.email }}</div>
+                            <div>Наш сайт: {{ el.site }}</div>
+                        </div>
+                    </blockquote>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <hr class="half-rule">
+
+    <div class="row featurette">
+    	<h2 class="text-center">График работы</h2>
+        <div class="center-block">
+        	{% for el in departs %}
+            <div class="col-lg-6">
+                <div class="panel-body">
+                {% if loop.index is divisibleby(2) %}
+                    <blockquote class="pull-left">
+                {% else %}
+    				<blockquote class="pull-right">
+    			{% endif %}
+                            <h4 class="lead"><b>{{ el.title }}</b></h4>
+                            {% for time in el.worktime %}
+                                <div class="text-center">{{ time }}</div>
+                            {% endfor %}
+                    </blockquote>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>     
+
+	<hr class="half-rule">
+
+        
+    <div class="row featurette">
+        <h2 class="text-center">Центр поставок</h2>
+            <div class="center-block">
+                <div class="col-lg-6">
+                    <div class="panel-body">
+                        <blockquote class="pull-right">
+                            <dl class="dl-horizontal">
+                                {% for el in send_persons %}
+                                    {% if loop.index is divisibleby(2) %}
+                                        <dt>{{ el.post }}</dt>
+                                        <dd>{{ el.name }}</dd>
+                                        <dd>Тел./факс: {{ el.phone }}</dd>
+                                        <dd>E-mail: {{ el.email }}</dd>
+                                    {% endif %}
+                                {% endfor %}
+                            </dl>
+                        </blockquote>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="panel-body">
+                        <blockquote>
+                            <dl class="dl-horizontal">
+                                {% for el in send_persons %}
+                                    {% if not loop.index is divisibleby(2) %}
+                                        <dt>{{ el.post }}</dt>
+                                        <dd>{{ el.name }}</dd>
+                                        <dd>Тел./факс: {{ el.phone }}</dd>
+                                        <dd>E-mail: {{ el.email }}</dd>
+                                    {% endif %}
+                                {% endfor %}
+                            </dl>
+                        </blockquote>
+                    </div>
+                </div>
+            </div>
+    </div>
+
+    <hr class="half-rule">
+
+    <div class="row featurette">
+        <h2 class="text-center">Администрация</h2>
+            <div class="center-block">
+                <div class="col-lg-6">
+                    <div class="panel-body">
+                        <blockquote class="pull-right">
+                            <dl class="dl-horizontal">
+                                {% for el in main_persons %}
+                                    {% if loop.index is divisibleby(2) %}
+                                        <dt>{{ el.post }}</dt>
+                                        <dd>{{ el.name }}</dd>
+                                        <dd>Тел./факс: {{ el.phone }}</dd>
+                                        <dd>E-mail: {{ el.email }}</dd>
+                                    {% endif %}
+                                {% endfor %}
+                            </dl>
+                        </blockquote>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="panel-body">
+                        <blockquote>
+                            <dl class="dl-horizontal">
+                                {% for el in main_persons %}
+                                    {% if not loop.index is divisibleby(2) %}
+                                        <dt>{{ el.post }}</dt>
+                                        <dd>{{ el.name }}</dd>
+                                        <dd>Тел./факс: {{ el.phone }}</dd>
+                                        <dd>E-mail: {{ el.email }}</dd>
+                                    {% endif %}
+                                {% endfor %}
+                            </dl>
+                        </blockquote>
+                    </div>
+                </div>
+            </div>
+    </div>
+
+    <hr class="half-rule">
+    <div class="row featurette">
+        <div class="modal-body row">
+            <form class="form-signin" method="POST" id="submit-form">
+                <h2 class="text-center">Обратная связь</h2>
+                    {{ forms.render(form) }}
+            </form>
+        </div>
+    </div>
+
+</b>
+{% endblock content %}
