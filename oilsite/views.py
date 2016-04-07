@@ -94,7 +94,42 @@ class ContactsPage(MethodView):
 		return render_template('oilsite/contacts.html', **context)
 
 
+class ProductsPage(MethodView):
+
+	def get_context(self, product):
+		flag = False
+		product = product.strip()
+		categories = Categories.objects.all()
+
+		prev_el = Categories.objects(title__lt=product)
+		if prev_el.first() is None:
+			prev_el = Categories.objects().all()[len(Categories.objects) - 1].title
+		else:
+			prev_el = prev_el[len(prev_el) - 1].title
+
+		next_el = Categories.objects(title__gt=product).first()
+		if next_el is None:
+			next_el = Categories.objects().first().title
+		else:
+			next_el = next_el.title
+
+		item = {"current": product, "next":next_el, "prev":prev_el}
+		product = Categories.objects(title=product).get()['products']
+		context = {
+			"categories":categories,
+			"product":product,
+			"item":item
+		}
+
+		return context
+
+	def get(self, product):
+		context = self.get_context(product)
+		return render_template('oilsite/products.html', **context)
+
+
 oilsite.add_url_rule('/', view_func=MainPage.as_view('main'))
 oilsite.add_url_rule('/dilers', view_func=DilersPage.as_view('dilers'))
 oilsite.add_url_rule('/delivery', view_func=DeliveryPage.as_view('delivery'))
 oilsite.add_url_rule('/contacts', view_func=ContactsPage.as_view('contacts'))
+oilsite.add_url_rule('/products/<product>/', view_func=ProductsPage.as_view('products'))

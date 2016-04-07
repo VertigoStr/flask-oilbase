@@ -50,4 +50,19 @@ class CallBack(db.Document):
 	phone = db.StringField(max_length=20, required=True)
 	message = db.StringField(required=True)
 
+class Products(db.EmbeddedDocument):
+	title = db.StringField(max_length=100, required=True)
+	image = db.StringField(max_length=100, required=True)
+	description = db.StringField(max_length=250, required=True)
+	content = db.StringField(max_length=100, required=True)
+	gost = db.StringField(max_length=250, required=True)
+	docs = db.StringField(max_length=250, required=True)
+	cost = db.IntField(required=True)
+	send_type = db.StringField(max_length=250, required=True)
+
+
+class Categories(db.Document):
+	title = db.StringField(max_length=100, required=True)
+	description = db.StringField(required=True)
+	products = db.ListField(db.EmbeddedDocumentField('Products'))
 
