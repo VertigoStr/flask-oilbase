@@ -97,19 +97,18 @@ class ContactsPage(MethodView):
 class ProductsPage(MethodView):
 
 	def get_context(self, product):
-		flag = False
 		product = product.strip()
-		categories = Categories.objects.all()
+		categories = Categories.objects.all().order_by('title')
 
-		prev_el = Categories.objects(title__lt=product)
+		prev_el = Categories.objects(title__lt=product).order_by('title')
 		if prev_el.first() is None:
-			prev_el = Categories.objects().all()[len(Categories.objects) - 1].title
+			prev_el = Categories.objects().all().order_by('title')[len(Categories.objects) - 1].title
 		else:
 			prev_el = prev_el[len(prev_el) - 1].title
 
-		next_el = Categories.objects(title__gt=product).first()
+		next_el = Categories.objects(title__gt=product).order_by('title').first()
 		if next_el is None:
-			next_el = Categories.objects().first().title
+			next_el = Categories.objects().order_by('title').first().title
 		else:
 			next_el = next_el.title
 
