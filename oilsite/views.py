@@ -1,7 +1,7 @@
 from flask.ext.mongoengine.wtf import model_form
 from flask import Blueprint, request, redirect, render_template, url_for
 from flask.views import MethodView
-from oilsite.models import *
+from oilsite import *
 from wtforms import *
 
 oilsite = Blueprint('oilsite', __name__, template_folder='templates')

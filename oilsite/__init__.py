@@ -1,15 +1,23 @@
-from datetime import datetime
-from flask import url_for
 from flask import Flask, render_template
+# db import
+from datetime import datetime
 from flask.ext.mongoengine import MongoEngine
+
+# admin import
 from flask_admin.contrib.mongoengine import ModelView
 import flask_admin as admin
 from flask_admin.form import rules
+
+# navigation import
+from flask.ext.navigation import Navigation
+
 
 app = Flask(__name__)
 
 app.config["MONGODB_SETTINGS"] = {'DB': "mng_oilbase"}
 app.config["SECRET_KEY"] = "password"
+
+# db part 
 
 db = MongoEngine()
 db.init_app(app)
@@ -88,11 +96,7 @@ class Categories(db.Document):
 	products = db.ListField(db.EmbeddedDocumentField('Products'))
 
 
-def register_blueprints(app):
-	from oilsite.views import oilsite
-	app.register_blueprint(oilsite)
-
-register_blueprints(app)
+# admin part
 
 class DescriptionsView(ModelView):
 	column_filters = ['title']
@@ -140,6 +144,50 @@ admin.add_view(DepartamentsView(Departaments))
 admin.add_view(ContactsView(Contacts))
 admin.add_view(DescriptionsView(Descriptions))
 admin.add_view(SlogansView(Slogans))
+
+# register blueprints for views
+
+def register_blueprints(app):
+	from oilsite.views import oilsite
+	app.register_blueprint(oilsite)
+
+register_blueprints(app)
+
+# navigation part
+nav = Navigation()
+nav.init_app(app)
+
+products_array = []
+categs = Categories.objects.all().order_by('title')
+for el in categs:
+	products_array.append(nav.Item(el.title, 'products', {'product': el.title}))
+
+nav.Bar('top', [
+		nav.Item('Продукция','products', {'product':'Бензин'}, items = products_array),
+		nav.Item('Дилеры', 'dilers'),
+		nav.Item('Доставка', 'delivery'),
+		nav.Item('Контакты', 'contacts')
+	])
+
+
+@app.route('/contacts')
+def contacts():
+	return render_template('oilsite/contacts.html')
+
+@app.route('/dilers')
+def dilers():
+	return render_template('oilsite/dilers.html')
+
+@app.route('/delivery')
+def delivery():
+	return render_template('oilsite/delivery.html')
+
+@app.route('/products/<product>/')
+def products():
+	return render_template('oilsite/products.html', product=product)
+
+# end
+
 
 if __name__ == '__main__':
 	app.run()
