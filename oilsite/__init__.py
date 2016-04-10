@@ -164,8 +164,8 @@ for el in categs:
 
 nav.Bar('top', [
 		nav.Item('Продукция','products', {'product':'Бензин'}, items = products_array),
-		nav.Item('Дилеры', 'dilers'),
 		nav.Item('Доставка', 'delivery'),
+		nav.Item('Дилеры', 'dilers'),
 		nav.Item('Контакты', 'contacts')
 	])
 
